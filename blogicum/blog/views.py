@@ -4,6 +4,7 @@
 from typing import Union
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import Http404
 
 
 posts: list[dict[str, Union[int, str]]] = [
@@ -53,14 +54,20 @@ posts: list[dict[str, Union[int, str]]] = [
 def index(request) -> HttpResponse:
     """Представление главной страницы."""
     template = 'blog/index.html'
-    context = {'post': reversed(posts), }
+    # Осуществляю сортировку от старых записей к новым по id.
+    # Меньший id соответствует более ранней записи.
+    sorted_posts = sorted(posts, key=lambda posts: posts['id'], reverse=True)
+    context = {'post': sorted_posts, }
     return render(request, template, context)
 
 
-def post_detail(request, id) -> HttpResponse:
+def post_detail(request, post_id) -> HttpResponse:
     """Представление отображающее текст выбранного блога."""
     template = 'blog/detail.html'
-    context = {'post': posts[id], }
+    # Проверка условия существования страницы: номер страницы==номеру поста.
+    if post_id not in [post['id'] for post in posts]:
+        raise Http404('Страница не найдена')
+    context = {'post': posts[post_id], }
     return render(request, template, context)
 
 
