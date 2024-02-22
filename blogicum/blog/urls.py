@@ -1,3 +1,6 @@
+"""Пространство адресов сайта."""
+
+
 from django.urls import path
 from . import views
 
