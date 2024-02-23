@@ -57,7 +57,7 @@ def index(request) -> HttpResponse:
     # Осуществляю сортировку от старых записей к новым по id.
     # Меньший id соответствует более ранней записи.
     sorted_posts = sorted(posts, key=lambda posts: posts['id'], reverse=True)
-    context = {'post': sorted_posts, }
+    context = {'post': sorted_posts}
     return render(request, template, context)
 
 
@@ -67,7 +67,7 @@ def post_detail(request, post_id: int) -> HttpResponse:
     # Проверка условия существования страницы: номер страницы==номеру поста.
     if post_id not in [post['id'] for post in posts]:
         raise Http404('Страница не найдена')
-    context = {'post': posts[post_id], }
+    context = {'post': posts[post_id]}
     return render(request, template, context)
 
 
