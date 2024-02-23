@@ -61,7 +61,7 @@ def index(request) -> HttpResponse:
     return render(request, template, context)
 
 
-def post_detail(request, post_id) -> HttpResponse:
+def post_detail(request, post_id: int) -> HttpResponse:
     """Представление отображающее текст выбранного блога."""
     template = 'blog/detail.html'
     # Проверка условия существования страницы: номер страницы==номеру поста.
